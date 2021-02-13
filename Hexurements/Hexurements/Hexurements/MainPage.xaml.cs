@@ -14,5 +14,15 @@ namespace Hexurements
         {
             InitializeComponent();
         }
+
+        private async void HexPicker_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new HexPage());
+        }
+
+        private async void MeasuringTool_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new MeasurePage());
+        }
     }
 }
