@@ -72,7 +72,7 @@ namespace Hexurements
 
         public override string ToString()
         {
-            return timeRecorded + "\t" + (((int)length)/12)+"'"+(length%12)+"\"";
+            return timeRecorded + "\t\t\t     " + (((int)length)/12)+"'  "+(length%12)+"\"";
         }
     }
 }
