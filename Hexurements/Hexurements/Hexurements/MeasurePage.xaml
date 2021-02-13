@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Hexurements.MeasurePage">
+             x:Class="Hexurements.MeasurePage" BackgroundColor="#B4A6AB">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Button Text="Start Measurement" BackgroundColor="#CDD5D1"
+                    BorderRadius="100" HorizontalOptions="Center"
+                    WidthRequest="200" HeightRequest="200" Margin="0, 50"
+                    FontSize="24"
+                    Clicked="btnMeasure_Clicked"/>
+            <ListView x:Name="lstMeasurements">
+                
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
