@@ -1,16 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Hex Picker"
+             BackgroundColor="{StaticResource BgColor}"
              x:Class="Hexurements.HexPage">
-    <StackLayout>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+    <StackLayout VerticalOptions="Center">
 
-            <Image x:Name="PhotoImage" />
-            <Button x:Name="CameraButton" Text="Take Photo" Grid.Row="1" Clicked="CameraButton_Clicked"/>
-        </Grid>
+        <Image x:Name="PhotoImage" 
+                   HeightRequest="400"/>
+        <Button x:Name="CameraButton"
+                Text="Take Photo"
+                Margin="20"
+                BackgroundColor="{StaticResource BtnColor}"
+                TextColor="{StaticResource TextColor}"
+                Clicked="CameraButton_Clicked" />
+        <Label x:Name="HexText" 
+               HorizontalTextAlignment="Center"
+               TextColor="{StaticResource TextColor}"/>
     </StackLayout>
 </ContentPage>

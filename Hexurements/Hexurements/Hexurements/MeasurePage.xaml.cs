@@ -70,6 +70,14 @@ namespace Hexurements
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public string Data
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         public override string ToString()
         {
             return timeRecorded + "\t\t\t     " + (((int)length)/12)+"'  "+(length%12)+"\"";

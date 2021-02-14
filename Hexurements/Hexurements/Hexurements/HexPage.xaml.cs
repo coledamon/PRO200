@@ -25,6 +25,8 @@ namespace Hexurements
                 {
                     return photo.GetStream();
                 });
+                CameraButton.Text = "Take New Picture";
+                HexText.Text = "#000000";
             }
         }
     }

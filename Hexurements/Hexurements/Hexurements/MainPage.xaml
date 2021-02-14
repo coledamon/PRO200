@@ -1,12 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Hexurements.MainPage">
+             x:Class="Hexurements.MainPage"
+             Title="Welcome to Hexurements!"
+             BackgroundColor="{StaticResource BgColor}">
 
-    <StackLayout>
-        <Label Text="Hexurements" FontSize="Title" Padding="30,10,30,10"/>
-        <Button Text="Hex Picker" Clicked="HexPicker_Clicked"/>
-        <Button Text="Measuring Tool" Clicked="MeasuringTool_Clicked"/>
+    <StackLayout VerticalOptions="Center">
+        <Button Text="Hex Picker"
+                Margin="10, 20, 10, 20"
+                HeightRequest="100"
+                Clicked="HexPicker_Clicked"
+                TextColor="{StaticResource TextColor}"
+                BackgroundColor="{StaticResource BtnColor}"/>
+        <Button Text="Measuring Tool"
+                Margin="10, 20, 10, 20"
+                HeightRequest="100"
+                Clicked="MeasuringTool_Clicked"
+                TextColor="{StaticResource TextColor}"
+                BackgroundColor="{StaticResource BtnColor}"/>
     </StackLayout>
 
 </ContentPage>
