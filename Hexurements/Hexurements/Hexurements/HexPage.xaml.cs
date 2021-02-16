@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.IO;
+using Android.Graphics;
+using Hexurements.Models;
+using Color = Android.Graphics.Color;
 
 namespace Hexurements
 {
     public partial class HexPage : ContentPage
     {
+        private byte[] arr = new byte[5];
         public HexPage()
         {
             InitializeComponent();
@@ -21,13 +26,34 @@ namespace Hexurements
 
             if (photo != null)
             {
+                Color color;
+                ColorFinder finder = null;
+
                 PhotoImage.Source = ImageSource.FromStream(() =>
                 {
+                    var memoryStream = new MemoryStream();
+                    photo.GetStream().CopyTo(memoryStream);
+
+                    finder = new ColorFinder(memoryStream);
+
                     return photo.GetStream();
                 });
-                CameraButton.Text = "Take New Picture";
-                HexText.Text = "#000000";
+
+                color = finder.GetCenterPixel();
+                UpdateHexText(color);
             }
+        }
+
+        private void UpdateHexText(Color color)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("#")
+                .Append(color.R.ToString("X2"))
+                .Append(color.G.ToString("X2"))
+                .Append(color.B.ToString("X2"));
+
+            HexText.Text = sb.ToString();
+            HexText.BackgroundColor = Xamarin.Forms.Color.FromHex(sb.ToString());
         }
     }
 }
