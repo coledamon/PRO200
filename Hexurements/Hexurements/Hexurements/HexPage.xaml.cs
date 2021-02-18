@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.IO;
-using Android.Graphics;
 using Hexurements.Models;
+using Android.Graphics;
 using Color = Android.Graphics.Color;
+
 
 namespace Hexurements
 {
