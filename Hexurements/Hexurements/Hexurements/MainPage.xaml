@@ -6,7 +6,7 @@
              BackgroundColor="{DynamicResource BgColor}">
 
 
-    <NavigationPage.TitleView Style="{DynamicResource NavStyle}">
+    <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal">
             <Label Text="Hexurements"
                    FontSize="20"
