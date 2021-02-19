@@ -7,6 +7,12 @@
             <Color x:Key="TextColor">#615055</Color>
             <Color x:Key="BgColor">#DDF8E8</Color>
             <Color x:Key="BtnColor">#B4A6AB</Color>
+            <Color x:Key="OGTextColor">#615055</Color>
+            <Color x:Key="OGBgColor">#DDF8E8</Color>
+            <Color x:Key="OGBtnColor">#B4A6AB</Color>
+            <Color x:Key="AltTextColor">#DDF8E8</Color>
+            <Color x:Key="AltBgColor">#615055</Color>
+            <Color x:Key="AltBtnColor">#946E83</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

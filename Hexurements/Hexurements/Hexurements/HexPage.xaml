@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Hex Picker"
-             BackgroundColor="{StaticResource BgColor}"
+             BackgroundColor="{DynamicResource BgColor}"
              x:Class="Hexurements.HexPage">
     <StackLayout VerticalOptions="Center">
 
@@ -11,11 +11,11 @@
         <Button x:Name="CameraButton"
                 Text="Take Photo"
                 Margin="20"
-                BackgroundColor="{StaticResource BtnColor}"
-                TextColor="{StaticResource TextColor}"
+                BackgroundColor="{DynamicResource BtnColor}"
+                TextColor="{DynamicResource TextColor}"
                 Clicked="CameraButton_Clicked" />
         <Label x:Name="HexText" 
                HorizontalTextAlignment="Center"
-               TextColor="{StaticResource TextColor}"/>
+               TextColor="{DynamicResource TextColor}"/>
     </StackLayout>
 </ContentPage>

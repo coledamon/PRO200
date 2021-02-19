@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hexurements.MeasurePage"
              Title="Measurements"
-             BackgroundColor="{StaticResource BgColor}">
+             BackgroundColor="{DynamicResource BgColor}">
     <ContentPage.Content>
         <StackLayout>
             <Button Text="Start Measurement"
-                    TextColor="{StaticResource TextColor}"
-                    BackgroundColor="{StaticResource BtnColor}"
+                    TextColor="{DynamicResource TextColor}"
+                    BackgroundColor="{DynamicResource BtnColor}"
                     BorderRadius="100" HorizontalOptions="Center"
                     WidthRequest="200" HeightRequest="200" Margin="0, 50"
                     FontSize="24"
@@ -20,7 +20,7 @@
                             <StackLayout>
                                 <Label Text="{Binding Data}"
                                        HorizontalTextAlignment="Center"
-                                       TextColor="{StaticResource TextColor}" />
+                                       TextColor="{DynamicResource TextColor}" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
