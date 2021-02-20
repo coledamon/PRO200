@@ -6,13 +6,16 @@
              BackgroundColor="{DynamicResource BgColor}">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Start Measurement"
+            <Button x:Name="btnMeasure"
+                    Text="Start Measurement"
                     TextColor="{DynamicResource TextColor}"
                     BackgroundColor="{DynamicResource BtnColor}"
                     BorderRadius="100" HorizontalOptions="Center"
                     WidthRequest="200" HeightRequest="200" Margin="0, 50"
                     FontSize="24"
                     Clicked="btnMeasure_Clicked"/>
+            <Label x:Name="lblText" Text="" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
+            <Button x:Name="btnClear" Text="Reset" IsVisible="false" Clicked="btnClear_Clicked"/>
             <ListView x:Name="lstMeasurements">
                 <ListView.ItemTemplate>
                     <DataTemplate>

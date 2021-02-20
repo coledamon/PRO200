@@ -8,57 +8,100 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Threading;
+using Android.App;
 
 namespace Hexurements
 {
     public partial class MeasurePage : ContentPage
     {
         ObservableCollection<Measurement> measurements = new ObservableCollection<Measurement>();
+        private Location location1;
+        private Location location2;
+        private double distance;
+        private int clickNum = 0;
+
         public MeasurePage()
         {
             InitializeComponent();
-            Measurement m = new Measurement();
-            m.Length = 28.9;
-            m.TimeRecorded = DateTime.Now;
-            measurements.Add(m);
-            measurements.Add(m);
-            measurements.Add(m);
-            measurements.Add(m);
             lstMeasurements.ItemsSource = measurements;
         }
 
         private void btnMeasure_Clicked(object sender, EventArgs e)
         {
-            Measurement m = new Measurement();
-            m.Length = 28.9;
-            m.TimeRecorded = DateTime.Now;
-            measurements.Add(m);
+            getLocation();   
+        }
 
+        private async void getLocation()
+        {
             try
             {
-                //var location = await Geolocation.GetLastKnownLocationAsync();
+                var request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(10));
+                CancellationTokenSource cts = new CancellationTokenSource();
+                var location = await Geolocation.GetLocationAsync(request, cts.Token);                
 
-                //if (location != null)
-                //{
-                //    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                //}
+                if (location != null)
+                {
+                    if(clickNum == 0)
+                    {
+                        location1 = location;
+                        clickNum++;
+                        lblText.Text = "Location 1 Recorded";
+                        btnClear.IsVisible = true;
+                    }
+                    else
+                    {
+                        location2 = location;
+                        clickNum--;
+                        double flatDistFeet = Location.CalculateDistance(location1, location2, DistanceUnits.Miles)*5280;
+                        if (location1.Altitude.HasValue && location2.Altitude.HasValue && (location1.Altitude != 0 || location2.Altitude != 0))
+                        {
+                            double heightFeet = (location2.Altitude.Value - location1.Altitude.Value) * 3.2808;
+                            distance = Math.Sqrt(Math.Pow(flatDistFeet, 2) + Math.Pow(heightFeet, 2));
+                        }
+                        else
+                        {
+                            distance = flatDistFeet;
+                        }
+                        Measurement m = new Measurement() { Length = distance, TimeRecorded = DateTime.Now };
+                        distance = 0;
+                        measurements.Add(m);
+                        lblText.Text = "Distance Recorded Below";
+                        btnClear.IsVisible = false;
+                        location1 = null;
+                        location2 = null;
+                    }
+                    //btnMeasure.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+                }
             }
             catch (FeatureNotSupportedException fnsEx)
             {
                 // Handle not supported on device exception
+                await DisplayAlert("Error", "This feature is not supported on your device.", "OK");
             }
             catch (FeatureNotEnabledException fneEx)
             {
                 // Handle not enabled on device exception
+                await DisplayAlert("Error", "This feature is not enabled on your device.", "OK");
             }
             catch (PermissionException pEx)
             {
                 // Handle permission exception
+                await DisplayAlert("Error", "Location Permissions are currently not allowed for this app. This must be changed in settings if you would like to use this feature.", "OK");
             }
             catch (Exception ex)
             {
                 // Unable to get location
+                await DisplayAlert("Error", "The location could not be retrieved, please try again.", "OK");
             }
+        }
+
+        private void btnClear_Clicked(object sender, EventArgs e)
+        {
+            lblText.Text = "";
+            btnClear.IsVisible = false;
+            clickNum = 0;
+            location1 = null;
         }
     }
 
@@ -107,7 +150,7 @@ namespace Hexurements
 
         public override string ToString()
         {
-            return timeRecorded + "\t\t\t     " + (((int)length)/12)+"'  "+(length%12)+"\"";
+            return timeRecorded + "\t\t\t     " + ((int)length) +"'  "+Math.Round((length-((int)length))*12, 2)+"\"";
         }
     }
 }
