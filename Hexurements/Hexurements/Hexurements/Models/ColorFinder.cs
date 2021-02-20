@@ -28,9 +28,18 @@ namespace Hexurements.Models
             byte[] imageBytes = this.photoStream.ToArray();
 
             Image image = StreamToImage(this.photoStream);
-
-            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
             
+            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+
+            int width = (int) image.Width;
+            int height = (int)image.Height;
+
+            double widthD = image.Width;
+            double heightD = image.Height;
+
+            width /= 2;
+            height /= 2;
+
             int pixel = bitmap.GetPixel(
                 (int)image.Width / 2,
                 (int)image.Height / 2);
@@ -40,6 +49,7 @@ namespace Hexurements.Models
 
         private Image StreamToImage(MemoryStream memoryStream)
         {
+            memoryStream.Position = 0;
             return new Image
             {
                 Source = ImageSource.FromStream(() => memoryStream)

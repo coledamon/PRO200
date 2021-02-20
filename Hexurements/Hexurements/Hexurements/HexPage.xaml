@@ -17,5 +17,9 @@
         <Label x:Name="HexText" 
                HorizontalTextAlignment="Center"
                TextColor="{DynamicResource TextColor}"/>
+        <Button
+            x:Name="uploadButton"
+            Text="Upload Image"
+            Clicked="UploadButton_Clicked"/>
     </StackLayout>
 </ContentPage>

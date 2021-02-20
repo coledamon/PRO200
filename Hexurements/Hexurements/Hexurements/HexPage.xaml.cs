@@ -8,13 +8,12 @@ using System.IO;
 using Hexurements.Models;
 using Android.Graphics;
 using Color = Android.Graphics.Color;
-
+using Plugin.Media;
 
 namespace Hexurements
 {
     public partial class HexPage : ContentPage
     {
-        private byte[] arr = new byte[5];
         public HexPage()
         {
             InitializeComponent();
@@ -24,7 +23,7 @@ namespace Hexurements
         {
             // Documentation for this: https://www.xamarinhelp.com/use-camera-take-photo-xamarin-forms/
             var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
-
+            
             if (photo != null)
             {
                 Color color;
@@ -43,6 +42,32 @@ namespace Hexurements
                 color = finder.GetCenterPixel();
                 UpdateHexText(color);
             }
+        }
+
+        private void UploadButton_Clicked(object sender, EventArgs e)
+        {
+            UploadPhoto();
+        }
+
+        private async void UploadPhoto()
+        {
+            await CrossMedia.Current.Initialize();
+
+            // Uploading photos is not supported
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                //Toast.MakeText(this, "Upload not supported on this device");
+            }
+
+            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Full,
+                CompressionQuality = 40
+            }) ;
+
+            //byte[] imageArray = System.IO.File.ReadAllBytes(file.Path);
+            
+            PhotoImage.Source = ImageSource.FromFile(file.Path);
         }
 
         private void UpdateHexText(Color color)
