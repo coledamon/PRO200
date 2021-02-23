@@ -22,24 +22,16 @@ namespace Hexurements
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
             // Documentation for this: https://www.xamarinhelp.com/use-camera-take-photo-xamarin-forms/
-            var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
+            var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions());
             
             if (photo != null)
             {
-                Color color;
-                ColorFinder finder = null;
-
                 PhotoImage.Source = ImageSource.FromStream(() =>
                 {
-                    var memoryStream = new MemoryStream();
-                    photo.GetStream().CopyTo(memoryStream);
-
-                    finder = new ColorFinder(memoryStream);
-
                     return photo.GetStream();
                 });
 
-                color = finder.GetCenterPixel();
+                Color color = GetCenterPixel(photo);
                 UpdateHexText(color);
             }
         }
@@ -64,10 +56,11 @@ namespace Hexurements
                 PhotoSize = Plugin.Media.Abstractions.PhotoSize.Full,
                 CompressionQuality = 40
             }) ;
-
-            //byte[] imageArray = System.IO.File.ReadAllBytes(file.Path);
             
             PhotoImage.Source = ImageSource.FromFile(file.Path);
+
+            Color color = GetCenterPixel(file);
+            UpdateHexText(color);
         }
 
         private void UpdateHexText(Color color)
@@ -80,6 +73,22 @@ namespace Hexurements
 
             HexText.Text = sb.ToString();
             HexText.BackgroundColor = Xamarin.Forms.Color.FromHex(sb.ToString());
+        }
+
+        public Color GetCenterPixel(Plugin.Media.Abstractions.MediaFile photo)
+        {
+            var memoryStream = new MemoryStream();
+            photo.GetStream().CopyTo(memoryStream);
+
+            byte[] imageBytes = memoryStream.ToArray();
+
+            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+
+            int pixel = bitmap.GetPixel(
+                (int)PhotoImage.Width / 2,
+                (int)PhotoImage.Height / 2);
+
+            return new Color(pixel);
         }
     }
 }
