@@ -52,6 +52,7 @@ namespace Hexurements
                         lblDebug.Text = location1.Latitude + " " + location1.Longitude;
                         btnMeasure.Text = "Stop Measurement";
                         btnClear.IsVisible = true;
+                        btnMeasure.Text = "End Measurement";
                     }
                     else
                     {
@@ -104,6 +105,7 @@ namespace Hexurements
 
         private void btnClear_Clicked(object sender, EventArgs e)
         {
+            btnMeasure.Text = "Start Measurement";
             lblText.Text = "";
             btnClear.IsVisible = false;
             clickNum = 0;

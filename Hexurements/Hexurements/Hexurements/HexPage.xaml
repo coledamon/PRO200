@@ -10,7 +10,7 @@
                    HeightRequest="400"/>
         <Button x:Name="CameraButton"
                 Text="Take Photo"
-                Margin="20"
+                Margin="10"
                 BackgroundColor="{DynamicResource BtnColor}"
                 TextColor="{DynamicResource TextColor}"
                 Clicked="CameraButton_Clicked" />
@@ -20,7 +20,7 @@
         <Button
             x:Name="uploadButton"
             Text="Upload Image"
-            Margin="20"
+            Margin="10"
             BackgroundColor="{DynamicResource BtnColor}"
             TextColor="{DynamicResource TextColor}"
             Clicked="UploadButton_Clicked"/>
