@@ -23,6 +23,8 @@ namespace Hexurements
 
         public MeasurePage()
         {
+            //create switch to be in constant measure mode
+            //when in constant measure mode, do while with a setInterval to update display until back, stop, or reset is clicked
             InitializeComponent();
             lstMeasurements.ItemsSource = measurements;
         }
@@ -47,6 +49,8 @@ namespace Hexurements
                         location1 = location;
                         clickNum++;
                         lblText.Text = "Location 1 Recorded";
+                        lblDebug.Text = location1.Latitude + " " + location1.Longitude;
+                        btnMeasure.Text = "Stop Measurement";
                         btnClear.IsVisible = true;
                     }
                     else
@@ -67,6 +71,8 @@ namespace Hexurements
                         distance = 0;
                         measurements.Add(m);
                         lblText.Text = "Distance Recorded Below";
+                        lblDebug.Text += "\n"+ location2.Latitude + " " + location2.Longitude;
+                        btnMeasure.Text = "Start Measurement";
                         btnClear.IsVisible = false;
                         location1 = null;
                         location2 = null;
@@ -102,6 +108,7 @@ namespace Hexurements
             btnClear.IsVisible = false;
             clickNum = 0;
             location1 = null;
+            btnMeasure.Text = "Start Measurement";
         }
     }
 

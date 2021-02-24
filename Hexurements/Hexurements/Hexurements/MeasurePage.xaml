@@ -15,6 +15,7 @@
                     FontSize="24"
                     Clicked="btnMeasure_Clicked"/>
             <Label x:Name="lblText" Text="" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
+            <Label x:Name="lblDebug" Text="" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
             <Button x:Name="btnClear" Text="Reset" IsVisible="false" Clicked="btnClear_Clicked"/>
             <ListView x:Name="lstMeasurements">
                 <ListView.ItemTemplate>
