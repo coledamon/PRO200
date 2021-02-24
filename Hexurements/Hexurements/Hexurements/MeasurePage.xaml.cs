@@ -48,6 +48,7 @@ namespace Hexurements
                         clickNum++;
                         lblText.Text = "Location 1 Recorded";
                         btnClear.IsVisible = true;
+                        btnMeasure.Text = "End Measurement";
                     }
                     else
                     {
@@ -67,6 +68,7 @@ namespace Hexurements
                         distance = 0;
                         measurements.Add(m);
                         lblText.Text = "Distance Recorded Below";
+                        btnMeasure.Text = "Start Measurement";
                         btnClear.IsVisible = false;
                         location1 = null;
                         location2 = null;
@@ -98,6 +100,7 @@ namespace Hexurements
 
         private void btnClear_Clicked(object sender, EventArgs e)
         {
+            btnMeasure.Text = "Start Measurement";
             lblText.Text = "";
             btnClear.IsVisible = false;
             clickNum = 0;
