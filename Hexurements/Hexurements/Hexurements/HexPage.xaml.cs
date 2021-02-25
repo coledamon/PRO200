@@ -7,8 +7,8 @@ using Xamarin.Forms;
 using System.IO;
 using Hexurements.Models;
 using Android.Graphics;
-using Color = Android.Graphics.Color;
 using Plugin.Media;
+using Color = Android.Graphics.Color;
 
 namespace Hexurements
 {
@@ -22,7 +22,7 @@ namespace Hexurements
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
             // Documentation for this: https://www.xamarinhelp.com/use-camera-take-photo-xamarin-forms/
-            var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions());
+            var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions { PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium }) ;
             
             if (photo != null)
             {
@@ -30,7 +30,6 @@ namespace Hexurements
                 {
                     return photo.GetStream();
                 });
-
                 Color color = GetCenterPixel(photo);
                 UpdateHexText(color);
             }
@@ -71,22 +70,21 @@ namespace Hexurements
                 .Append(color.G.ToString("X2"))
                 .Append(color.B.ToString("X2"));
 
-            HexText.Text = sb.ToString();
-            HexText.BackgroundColor = Xamarin.Forms.Color.FromHex(sb.ToString());
+            Xamarin.Forms.Color colorFromHex = Xamarin.Forms.Color.FromHex(sb.ToString());
+
+            HexText.Text = colorFromHex.ToHex();
+            HexText.TextColor = colorFromHex.Luminosity >= .5 ? colorFromHex.WithLuminosity(0) : colorFromHex.WithLuminosity(1);
+            HexText.BackgroundColor = colorFromHex;
         }
 
         public Color GetCenterPixel(Plugin.Media.Abstractions.MediaFile photo)
         {
-            var memoryStream = new MemoryStream();
-            photo.GetStream().CopyTo(memoryStream);
+            Bitmap bitmap = BitmapFactory.DecodeFile(photo.Path);
 
-            byte[] imageBytes = memoryStream.ToArray();
+            int centerX = bitmap.Width / 2;
+            int centerY = bitmap.Height / 2;
 
-            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-
-            int pixel = bitmap.GetPixel(
-                (int)PhotoImage.Width / 2,
-                (int)PhotoImage.Height / 2);
+            int pixel = bitmap.GetPixel(centerX, centerY);
 
             return new Color(pixel);
         }

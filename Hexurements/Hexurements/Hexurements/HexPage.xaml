@@ -9,14 +9,13 @@
         <Image x:Name="PhotoImage" 
                    HeightRequest="400"/>
         <Button x:Name="CameraButton"
-                Text="Take Photo"
+                Text="Take Image"
                 Margin="10"
                 BackgroundColor="{DynamicResource BtnColor}"
                 TextColor="{DynamicResource TextColor}"
                 Clicked="CameraButton_Clicked" />
         <Label x:Name="HexText" 
-               HorizontalTextAlignment="Center"
-               TextColor="{DynamicResource TextColor}"/>
+               HorizontalTextAlignment="Center"/>
         <Button
             x:Name="uploadButton"
             Text="Upload Image"
