@@ -44,7 +44,7 @@ namespace Hexurements
 
                 if (location != null)
                 {
-                    if(clickNum == 0)
+                    if (clickNum == 0)
                     {
                         location1 = location;
                         clickNum++;
@@ -72,11 +72,13 @@ namespace Hexurements
                         distance = 0;
                         measurements.Add(m);
                         lblText.Text = "Distance Recorded Below";
-                        lblDebug.Text += "\n"+ location2.Latitude + " " + location2.Longitude;
+                        lblDebug.Text += "\n" + location2.Latitude + " " + location2.Longitude;
                         btnMeasure.Text = "Start Measurement";
                         btnClear.IsVisible = false;
                         location1 = null;
                         location2 = null;
+
+                        
                     }
                     //btnMeasure.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
                 }
