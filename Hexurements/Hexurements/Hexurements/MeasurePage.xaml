@@ -6,14 +6,22 @@
              BackgroundColor="{DynamicResource BgColor}">
     <ContentPage.Content>
         <StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                <Label x:Name="lblMode" Text="Mode (Current: Points): "/>
+                <Switch x:Name="swcMode" Toggled="swcMode_Toggled" HorizontalOptions="End"/>
+                
+            </StackLayout>
+            
+                
             <Button x:Name="btnMeasure"
                     Text="Start Measurement"
                     TextColor="{DynamicResource TextColor}"
                     BackgroundColor="{DynamicResource BtnColor}"
                     BorderRadius="100" HorizontalOptions="Center"
-                    WidthRequest="200" HeightRequest="200" Margin="0, 50"
+                    WidthRequest="200" HeightRequest="200" Margin="0, 50, 0, 10"
                     FontSize="24"
                     Clicked="btnMeasure_Clicked"/>
+            <Label x:Name="lblConstantDist" Text="" FontSize="24" TextColor="Black" HorizontalOptions="Center"/>
             <Label x:Name="lblText" Text="" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
             <Label x:Name="lblDebug" Text="" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
             <Button x:Name="btnClear" Text="Reset" IsVisible="false" Clicked="btnClear_Clicked"/>
