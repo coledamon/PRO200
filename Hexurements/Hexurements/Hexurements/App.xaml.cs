@@ -34,7 +34,7 @@ namespace Hexurements
             {
                 return colorsFolderName;
             }
-        }
+        } 
 
         public string ColorsFileName
         {

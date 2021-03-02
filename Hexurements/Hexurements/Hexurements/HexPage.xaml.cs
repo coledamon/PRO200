@@ -7,6 +7,8 @@ using Color = Android.Graphics.Color;
 using Plugin.Media.Abstractions;
 using System.Threading.Tasks;
 using PCLStorage;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Hexurements
 {
@@ -86,6 +88,7 @@ namespace Hexurements
 
         private async Task SaveColorToFile(Color color)
         {
+            
             var app = App.Current as App;
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
@@ -99,9 +102,16 @@ namespace Hexurements
 
             string fileContent = await file.ReadAllTextAsync();
 
-            await file.WriteAllTextAsync(fileContent + 
-                Environment.NewLine + 
-                ColorToHex(color));
+            string colorHex = ColorToHex(color);
+            List<string> colors = fileContent.Split(Environment.NewLine.ToCharArray()).ToList<string>();
+            
+            if (!colors.Contains(colorHex))
+            {
+                await file.WriteAllTextAsync(fileContent + 
+                    Environment.NewLine + 
+                    colorHex);
+            }
+
         }
 
         private string ColorToHex(Color color)
@@ -133,6 +143,7 @@ namespace Hexurements
             // You now have file's content
             string content = await file.ReadAllTextAsync();
 
+            throw new NotImplementedException("This method is just an example on how to read the colors text file.");
         }
     }
 }
