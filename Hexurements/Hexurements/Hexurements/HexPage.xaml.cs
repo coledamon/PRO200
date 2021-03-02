@@ -101,11 +101,10 @@ namespace Hexurements
                 CreationCollisionOption.OpenIfExists);
 
             string fileContent = await file.ReadAllTextAsync();
-
-            string colorHex = ColorToHex(color);
-            List<string> colors = fileContent.Split(Environment.NewLine.ToCharArray()).ToList<string>();
             
-            if (!colors.Contains(colorHex))
+            string colorHex = ColorToHex(color);
+            
+            if (!fileContent.Contains(colorHex))
             {
                 await file.WriteAllTextAsync(fileContent + 
                     Environment.NewLine + 
