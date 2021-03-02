@@ -6,6 +6,9 @@ namespace Hexurements
 {
     public partial class App : Application
     {
+        private const string colorsFolderName = "Unlocked Colors";
+        private const string colorsFileName = "unlockedColors.txt";
+
         public App()
         {
             InitializeComponent();
@@ -23,6 +26,22 @@ namespace Hexurements
 
         protected override void OnResume()
         {
+        }
+
+        public string ColorsFolderName
+        {
+            get
+            {
+                return colorsFolderName;
+            }
+        }
+
+        public string ColorsFileName
+        {
+            get
+            {
+                return colorsFileName;
+            }
         }
     }
 }
