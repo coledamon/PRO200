@@ -151,16 +151,13 @@ namespace Hexurements
             string content = await file.ReadAllTextAsync();
             string[] readHexes = content.Split(
                 new[] { Environment.NewLine },
-                StringSplitOptions.None
+                StringSplitOptions.RemoveEmptyEntries
                 );
             hexes.Clear();
             foreach (string hex in readHexes)
             {
-                if (!string.IsNullOrWhiteSpace(hex))
-                {
-                    Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(hex) };
-                    hexes.Add(h);
-                }
+                Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(hex) };
+                hexes.Add(h);
             }
         }
 
