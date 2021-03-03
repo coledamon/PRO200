@@ -4,24 +4,39 @@
              Title="Hex Picker"
              BackgroundColor="{DynamicResource BgColor}"
              x:Class="Hexurements.HexPage">
-    <StackLayout VerticalOptions="Center">
-
-        <Image x:Name="PhotoImage" 
-                   HeightRequest="400"/>
-        <Button x:Name="CameraButton"
-                Text="Take Image"
-                Margin="10"
-                BackgroundColor="{DynamicResource BtnColor}"
-                TextColor="{DynamicResource TextColor}"
-                Clicked="CameraButton_Clicked" />
-        <Label x:Name="HexText" 
-               HorizontalTextAlignment="Center"/>
-        <Button
-            x:Name="uploadButton"
-            Text="Upload Image"
-            Margin="10"
-            BackgroundColor="{DynamicResource BtnColor}"
-            TextColor="{DynamicResource TextColor}"
-            Clicked="UploadButton_Clicked"/>
-    </StackLayout>
+    <ScrollView>
+        <StackLayout VerticalOptions="Center">
+            <Image x:Name="PhotoImage"
+                   HeightRequest="400" />
+            <Button x:Name="CameraButton"
+                    Text="Take Image"
+                    Margin="10"
+                    BackgroundColor="{DynamicResource BtnColor}"
+                    TextColor="{DynamicResource TextColor}"
+                    Clicked="CameraButton_Clicked" />
+            <Label x:Name="HexText"
+                   HorizontalTextAlignment="Center" />
+            <Button x:Name="uploadButton"
+                    Text="Upload Image"
+                    Margin="10"
+                    BackgroundColor="{DynamicResource BtnColor}"
+                    TextColor="{DynamicResource TextColor}"
+                    Clicked="UploadButton_Clicked" />
+            <ListView x:Name="ColorList" Margin="100, 20" WidthRequest="20">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Data}"
+                                       WidthRequest="20"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{Binding ListedColorAlt}"
+                                       BackgroundColor="{Binding ListedColor}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

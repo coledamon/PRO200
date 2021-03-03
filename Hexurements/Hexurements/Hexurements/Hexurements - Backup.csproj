@@ -27,6 +27,9 @@
     <Compile Update="HexPage.xaml.cs">
       <DependentUpon>HexPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="MeasurePage.xaml.cs">
+      <DependentUpon>MeasurePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

@@ -177,7 +177,6 @@ namespace Hexurements
         {
             mode = swcMode.IsToggled ? "constant" : "points";
             lblMode.Text = swcMode.IsToggled ? "Mode (Current: Constant): " : "Mode (Current: Points): ";
-            //Console.WriteLine(mode);
         }
     }
 

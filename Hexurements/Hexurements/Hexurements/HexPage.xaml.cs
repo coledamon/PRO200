@@ -9,21 +9,28 @@ using System.Threading.Tasks;
 using PCLStorage;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace Hexurements
 {
     public partial class HexPage : ContentPage
     {
+
+        ObservableCollection<Hex> hexes = new ObservableCollection<Hex>();
+
         public HexPage()
         {
             InitializeComponent();
+            ColorList.ItemsSource = hexes;
+            LoadHexes();
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
             // Documentation for this: https://www.xamarinhelp.com/use-camera-take-photo-xamarin-forms/
-            var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions { PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium }) ;
-            
+            var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions { PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium });
+
             if (photo != null)
             {
                 PhotoImage.Source = ImageSource.FromStream(() =>
@@ -31,9 +38,10 @@ namespace Hexurements
                     return photo.GetStream();
                 });
                 Color color = GetCenterPixel(photo);
+                Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(ColorToHex(color)) };
+                hexes.Add(h);
                 UpdateHexText(color);
                 await SaveColorToFile(color);
-                await ReadFileExample();
             }
         }
 
@@ -56,8 +64,8 @@ namespace Hexurements
             {
                 PhotoSize = Plugin.Media.Abstractions.PhotoSize.Full,
                 CompressionQuality = 40
-            }) ;
-            
+            });
+
             PhotoImage.Source = ImageSource.FromFile(file.Path);
 
             Color color = GetCenterPixel(file);
@@ -88,7 +96,7 @@ namespace Hexurements
 
         private async Task SaveColorToFile(Color color)
         {
-            
+
             var app = App.Current as App;
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
@@ -97,17 +105,17 @@ namespace Hexurements
             IFolder colorsFolder = await rootFolder.CreateFolderAsync(app.ColorsFolderName,
                 CreationCollisionOption.OpenIfExists);
 
-            IFile file = await colorsFolder.CreateFileAsync(app.ColorsFileName, 
+            IFile file = await colorsFolder.CreateFileAsync(app.ColorsFileName,
                 CreationCollisionOption.OpenIfExists);
 
             string fileContent = await file.ReadAllTextAsync();
-            
+
             string colorHex = ColorToHex(color);
-            
+
             if (!fileContent.Contains(colorHex))
             {
-                await file.WriteAllTextAsync(fileContent + 
-                    Environment.NewLine + 
+                await file.WriteAllTextAsync(fileContent +
+                    Environment.NewLine +
                     colorHex);
             }
 
@@ -125,7 +133,7 @@ namespace Hexurements
         }
 
         // Example code to read back the hex color.
-        private async Task ReadFileExample()
+        private async Task LoadHexes()
         {
             // Access application properties for folder/file names.
             var app = App.Current as App;
@@ -141,8 +149,71 @@ namespace Hexurements
 
             // You now have file's content
             string content = await file.ReadAllTextAsync();
-
-            throw new NotImplementedException("This method is just an example on how to read the colors text file.");
+            string[] readHexes = content.Split(
+                new[] { Environment.NewLine },
+                StringSplitOptions.None
+                );
+            hexes.Clear();
+            foreach (string hex in readHexes)
+            {
+                if (!string.IsNullOrWhiteSpace(hex))
+                {
+                    Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(hex) };
+                    hexes.Add(h);
+                }
+            }
         }
+
+
+        public class Hex : INotifyPropertyChanged
+        {
+            private Xamarin.Forms.Color listedColor;
+            private Xamarin.Forms.Color listedColorAlt;
+
+            public Xamarin.Forms.Color ListedColor
+            {
+                get { return listedColor; }
+                set
+                {
+                    if (value != listedColor)
+                    {
+                        listedColor = value;
+                        ListedColorAlt = listedColor.Luminosity >= .5 ? listedColor.WithLuminosity(0) : listedColor.WithLuminosity(1);
+                        onPropertyChanged("ListedColor");
+                    }
+                }
+            }
+            public Xamarin.Forms.Color ListedColorAlt
+            {
+                get { return listedColorAlt; }
+                set
+                {
+                    if (value != listedColorAlt)
+                    {
+                        listedColorAlt = value;
+                        onPropertyChanged("ListedColorAlt");
+                    }
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public void onPropertyChanged(string propertyName = null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public string Data
+            {
+                get
+                {
+                    return ListedColor.ToHex();
+                }
+            }
+        }
+
+
+
+
     }
 }
