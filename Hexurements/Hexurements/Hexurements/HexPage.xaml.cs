@@ -24,6 +24,41 @@ namespace Hexurements
             InitializeComponent();
             ColorList.ItemsSource = hexes;
             LoadHexes();
+            ColorList.ItemSelected += async (s, e) =>
+            {
+                Hex selectedHex = (Hex)ColorList.SelectedItem;
+                var action = await DisplayActionSheet("", "Cancel", null, "Delete Hex", "Clear List");
+                switch (action)
+                {
+                    case "Delete Hex":
+                        DeleteHex(selectedHex);
+                        break;
+                    case "Clear List":
+                        ClearList();
+                        break;
+                }
+            };
+        }
+
+        private async void DeleteHex(Hex hex)
+        {
+            var action = await DisplayActionSheet("Are you sure?", "Cancel", null, "Delete Hex");
+            switch (action)
+            {
+                case "Delete Hex":
+                    hexes.Remove(hex);
+                    break;
+            }
+        }
+        private async void ClearList()
+        {
+            var action = await DisplayActionSheet("Are you sure?", "Cancel", null, "Clear List");
+            switch (action)
+            {
+                case "Clear List":
+                    hexes.Clear();
+                    break;
+            }
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
