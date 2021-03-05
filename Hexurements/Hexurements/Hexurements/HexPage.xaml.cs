@@ -11,6 +11,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using SkiaSharp;
 
 namespace Hexurements
 {
@@ -18,12 +19,15 @@ namespace Hexurements
     {
 
         ObservableCollection<Hex> hexes = new ObservableCollection<Hex>();
+        SKBitmap sKBitmap;
 
         public HexPage()
         {
+            
             InitializeComponent();
             ColorList.ItemsSource = hexes;
             LoadHexes();
+            skPhotoImage.InvalidateSurface();
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
@@ -33,10 +37,12 @@ namespace Hexurements
 
             if (photo != null)
             {
-                PhotoImage.Source = ImageSource.FromStream(() =>
-                {
-                    return photo.GetStream();
-                });
+                sKBitmap = SKBitmap.Decode(photo.GetStream());
+
+                //PhotoImage.Source = ImageSource.FromStream(() =>
+                //{
+                //    return photo.GetStream();
+                //});
                 Color color = GetCenterPixel(photo);
                 Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(ColorToHex(color)) };
                 hexes.Add(h);
@@ -66,7 +72,8 @@ namespace Hexurements
                 CompressionQuality = 40
             });
 
-            PhotoImage.Source = ImageSource.FromFile(file.Path);
+            //PhotoImage.Source = ImageSource.FromFile(file.Path);
+            sKBitmap = SKBitmap.Decode(file.GetStream());
 
             Color color = GetCenterPixel(file);
             UpdateHexText(color);
@@ -209,8 +216,36 @@ namespace Hexurements
             }
         }
 
+        private void skPhotoImage_PaintSurface(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs e)
+        {
+            SKCanvas canvas = e.Surface.Canvas;
+            SKImageInfo info = e.Info;
+            skPhotoImage.InvalidateSurface();
 
+            if (sKBitmap != null)
+            {
+                float scale = (float)info.Width*2 / sKBitmap.Width/3;
 
+                float left = (info.Width - scale * sKBitmap.Width) / 2;
+                float top = (info.Height - scale * sKBitmap.Height) / 2;
+                float right = left + scale * sKBitmap.Width;
+                float bottom = top + scale * sKBitmap.Height;
+                SKRect rect = new SKRect(left, top, right, bottom);
 
+                canvas.DrawBitmap(sKBitmap, rect);
+                //canvas.DrawBitmap(sKBitmap, e.Info.Width/4, e.Info.Height/4);
+            }
+            else
+            {
+                SKPaint paint = new SKPaint();                
+                paint.Color = SKColors.Blue;
+                paint.TextAlign = SKTextAlign.Center;
+                paint.TextSize = 48;
+
+                canvas.DrawText("Upload or Take a Photo",
+                    e.Info.Width/2, e.Info.Height / 2, paint);
+                
+            }
+        }
     }
 }
