@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using SkiaSharp;
+using SkiaSharp.Views.Forms;
 
 namespace Hexurements
 {
@@ -87,10 +88,9 @@ namespace Hexurements
             {
                 sKBitmap = SKBitmap.Decode(photo.GetStream());
 
-
                 Color color = GetCenterPixel(photo);
                 Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(ColorToHex(color)) };
-                hexes.Add(h);
+                if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
                 UpdateHexText(color);
                 await SaveColorToFile(color);
             }
@@ -120,6 +120,8 @@ namespace Hexurements
             sKBitmap = SKBitmap.Decode(file.GetStream());
 
             Color color = GetCenterPixel(file);
+            Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(ColorToHex(color)) };
+            if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
             UpdateHexText(color);
             await SaveColorToFile(color);
         }
@@ -281,7 +283,7 @@ namespace Hexurements
             }
         }
 
-        private void skPhotoImage_PaintSurface(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs e)
+        private void skPhotoImage_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             SKCanvas canvas = e.Surface.Canvas;
             SKImageInfo info = e.Info;
@@ -298,7 +300,6 @@ namespace Hexurements
                 SKRect rect = new SKRect(left, top, right, bottom);
 
                 canvas.DrawBitmap(sKBitmap, rect);
-                //canvas.DrawBitmap(sKBitmap, e.Info.Width/4, e.Info.Height/4);
             }
             else
             {
