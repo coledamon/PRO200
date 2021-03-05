@@ -28,6 +28,54 @@ namespace Hexurements
             ColorList.ItemsSource = hexes;
             LoadHexes();
             skPhotoImage.InvalidateSurface();
+            ColorList.ItemSelected += async (s, e) =>
+            {
+                Hex selectedHex = (Hex)ColorList.SelectedItem;
+                var action = await DisplayActionSheet("", "Cancel", null, "Delete Hex", "Clear List");
+                switch (action)
+                {
+                    case "Delete Hex":
+                        DeleteHex(selectedHex);
+                        break;
+                    case "Clear List":
+                        ClearList();
+                        break;
+                }
+            };
+        }
+
+        private async void DeleteHex(Hex hex)
+        {
+            var action = await DisplayActionSheet("Are you sure?", "Cancel", null, "Delete Hex");
+            switch (action)
+            {
+                case "Delete Hex":
+                    hexes.Remove(hex);
+                    RemoveColorFromFile(hex);
+                    break;
+            }
+        }
+        private async void ClearList()
+        {
+            var action = await DisplayActionSheet("Are you sure?", "Cancel", null, "Clear List");
+            switch (action)
+            {
+                case "Clear List":
+                    hexes.Clear();
+                    var app = App.Current as App;
+
+                    IFolder rootFolder = FileSystem.Current.LocalStorage;
+
+                    IFolder colorsFolder = await rootFolder.CreateFolderAsync(app.ColorsFolderName,
+                        CreationCollisionOption.OpenIfExists);
+
+                    IFile file = await colorsFolder.CreateFileAsync(app.ColorsFileName,
+                        CreationCollisionOption.OpenIfExists);
+
+                    await file.WriteAllTextAsync("");
+
+                    break;
+            }
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
@@ -39,10 +87,7 @@ namespace Hexurements
             {
                 sKBitmap = SKBitmap.Decode(photo.GetStream());
 
-                //PhotoImage.Source = ImageSource.FromStream(() =>
-                //{
-                //    return photo.GetStream();
-                //});
+
                 Color color = GetCenterPixel(photo);
                 Hex h = new Hex() { ListedColor = Xamarin.Forms.Color.FromHex(ColorToHex(color)) };
                 hexes.Add(h);
@@ -72,7 +117,6 @@ namespace Hexurements
                 CompressionQuality = 40
             });
 
-            //PhotoImage.Source = ImageSource.FromFile(file.Path);
             sKBitmap = SKBitmap.Decode(file.GetStream());
 
             Color color = GetCenterPixel(file);
@@ -103,7 +147,6 @@ namespace Hexurements
 
         private async Task SaveColorToFile(Color color)
         {
-
             var app = App.Current as App;
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
@@ -126,6 +169,28 @@ namespace Hexurements
                     colorHex);
             }
 
+        }
+        private async void RemoveColorFromFile(Hex hex)
+        {
+            var app = App.Current as App;
+
+            IFolder rootFolder = FileSystem.Current.LocalStorage;
+
+            IFolder colorsFolder = await rootFolder.CreateFolderAsync(app.ColorsFolderName,
+                CreationCollisionOption.OpenIfExists);
+
+            IFile file = await colorsFolder.CreateFileAsync(app.ColorsFileName,
+                CreationCollisionOption.OpenIfExists);
+
+            string fileContent = await file.ReadAllTextAsync();
+
+            string hexCode = hex.Data;
+
+            string newHexCode = hexCode.Remove(1, 2);
+            
+            fileContent = fileContent.Replace(newHexCode, "");
+
+            await file.WriteAllTextAsync(fileContent);
         }
 
         private string ColorToHex(Color color)
