@@ -47,6 +47,7 @@ namespace Hexurements
             {
                 case "Delete Hex":
                     hexes.Remove(hex);
+                    RemoveColorFromFile(hex);
                     break;
             }
         }
@@ -57,6 +58,18 @@ namespace Hexurements
             {
                 case "Clear List":
                     hexes.Clear();
+                    var app = App.Current as App;
+
+                    IFolder rootFolder = FileSystem.Current.LocalStorage;
+
+                    IFolder colorsFolder = await rootFolder.CreateFolderAsync(app.ColorsFolderName,
+                        CreationCollisionOption.OpenIfExists);
+
+                    IFile file = await colorsFolder.CreateFileAsync(app.ColorsFileName,
+                        CreationCollisionOption.OpenIfExists);
+
+                    await file.WriteAllTextAsync("");
+
                     break;
             }
         }
@@ -131,7 +144,6 @@ namespace Hexurements
 
         private async Task SaveColorToFile(Color color)
         {
-
             var app = App.Current as App;
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
@@ -154,6 +166,28 @@ namespace Hexurements
                     colorHex);
             }
 
+        }
+        private async void RemoveColorFromFile(Hex hex)
+        {
+            var app = App.Current as App;
+
+            IFolder rootFolder = FileSystem.Current.LocalStorage;
+
+            IFolder colorsFolder = await rootFolder.CreateFolderAsync(app.ColorsFolderName,
+                CreationCollisionOption.OpenIfExists);
+
+            IFile file = await colorsFolder.CreateFileAsync(app.ColorsFileName,
+                CreationCollisionOption.OpenIfExists);
+
+            string fileContent = await file.ReadAllTextAsync();
+
+            string hexCode = hex.Data;
+
+            string newHexCode = hexCode.Remove(1, 2);
+            
+            fileContent = fileContent.Replace(newHexCode, "");
+
+            await file.WriteAllTextAsync(fileContent);
         }
 
         private string ColorToHex(Color color)
