@@ -21,6 +21,7 @@ namespace Hexurements
 
         ObservableCollection<Hex> hexes = new ObservableCollection<Hex>();
         SKBitmap sKBitmap;
+        int crossSize = 50;
 
         public HexPage()
         {
@@ -76,6 +77,7 @@ namespace Hexurements
                     await file.WriteAllTextAsync("");
 
                     break;
+
             }
         }
 
@@ -93,6 +95,7 @@ namespace Hexurements
                 if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
                 UpdateHexText(color);
                 await SaveColorToFile(color);
+                drawCross();
             }
         }
 
@@ -124,6 +127,7 @@ namespace Hexurements
             if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
             UpdateHexText(color);
             await SaveColorToFile(color);
+            drawCross();
         }
 
         private void UpdateHexText(Color color)
@@ -300,6 +304,24 @@ namespace Hexurements
                 SKRect rect = new SKRect(left, top, right, bottom);
 
                 canvas.DrawBitmap(sKBitmap, rect);
+
+                SKColor color = sKBitmap.GetPixel(sKBitmap.Width / 2, sKBitmap.Height / 2);
+
+                SKPaint paint = new SKPaint() { Style = SKPaintStyle.Stroke, Color = SKColors.Black, StrokeWidth = 5 };
+                SKPath path = new SKPath();
+                float centerWidth = (scale * sKBitmap.Width / 2) + left;
+                float centerHeight = (scale * sKBitmap.Height / 2) + top;
+
+                path.MoveTo(centerWidth, centerHeight - crossSize);
+                path.LineTo(centerWidth, centerHeight + crossSize);
+
+                path.MoveTo(centerWidth - crossSize, centerHeight);
+                path.LineTo(centerWidth + crossSize, centerHeight);
+
+                canvas.DrawPath(path, paint);
+
+                canvas.DrawRect(new SKRect(centerWidth - 2, centerHeight - 2, centerWidth + 2, centerHeight + 2), new SKPaint() { Style = SKPaintStyle.Stroke, Color = color, StrokeWidth = 1 });
+
             }
             else
             {
@@ -312,6 +334,13 @@ namespace Hexurements
                     e.Info.Width/2, e.Info.Height / 2, paint);
                 
             }
+        }
+
+        private void drawCross()
+        {
+            
+
+            
         }
     }
 }
