@@ -7,7 +7,9 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                <Label x:Name="lblMode" Text="Mode (Current: Points): "/>
+                <Label x:Name="lblMode"
+                       Text="Mode (Current: Points): "
+                       TextColor="{DynamicResource TextColor}" />
                 <Switch x:Name="swcMode" Toggled="swcMode_Toggled" HorizontalOptions="End"/>
                 
             </StackLayout>

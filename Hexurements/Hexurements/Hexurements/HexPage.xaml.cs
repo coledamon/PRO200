@@ -325,8 +325,9 @@ namespace Hexurements
             }
             else
             {
-                SKPaint paint = new SKPaint();                
-                paint.Color = SKColors.Blue;
+                SKPaint paint = new SKPaint();
+                Xamarin.Forms.Color color = (Xamarin.Forms.Color)Application.Current.Resources["TextColor"];
+                paint.Color = color.ToSKColor();
                 paint.TextAlign = SKTextAlign.Center;
                 paint.TextSize = 48;
 

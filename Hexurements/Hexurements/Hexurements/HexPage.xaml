@@ -7,7 +7,7 @@
              x:Class="Hexurements.HexPage">
     <ScrollView>
         <StackLayout VerticalOptions="Center">
-            <views:SKCanvasView x:Name="skPhotoImage" 
+            <views:SKCanvasView x:Name="skPhotoImage"
                                 HeightRequest="400"
                                 PaintSurface="skPhotoImage_PaintSurface"/>
             <Label x:Name="HexText"
