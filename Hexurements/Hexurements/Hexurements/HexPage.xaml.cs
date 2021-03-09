@@ -95,7 +95,6 @@ namespace Hexurements
                 if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
                 UpdateHexText(color);
                 await SaveColorToFile(color);
-                drawCross();
             }
         }
 
@@ -127,7 +126,6 @@ namespace Hexurements
             if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
             UpdateHexText(color);
             await SaveColorToFile(color);
-            drawCross();
         }
 
         private void UpdateHexText(Color color)
@@ -325,22 +323,15 @@ namespace Hexurements
             }
             else
             {
-                SKPaint paint = new SKPaint();                
-                paint.Color = SKColors.Blue;
+                SKPaint paint = new SKPaint();
+                Xamarin.Forms.Color color = (Xamarin.Forms.Color)Application.Current.Resources["TextColor"];
+                paint.Color = color.ToSKColor();
                 paint.TextAlign = SKTextAlign.Center;
                 paint.TextSize = 48;
 
                 canvas.DrawText("Upload or Take a Photo",
                     e.Info.Width/2, e.Info.Height / 2, paint);
-                
             }
-        }
-
-        private void drawCross()
-        {
-            
-
-            
         }
     }
 }
