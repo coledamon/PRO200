@@ -95,7 +95,6 @@ namespace Hexurements
                 if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
                 UpdateHexText(color);
                 await SaveColorToFile(color);
-                drawCross();
             }
         }
 
@@ -127,7 +126,6 @@ namespace Hexurements
             if(hexes.Count(hex => hex.ListedColor == h.ListedColor) == 0) hexes.Add(h);
             UpdateHexText(color);
             await SaveColorToFile(color);
-            drawCross();
         }
 
         private void UpdateHexText(Color color)
@@ -333,15 +331,7 @@ namespace Hexurements
 
                 canvas.DrawText("Upload or Take a Photo",
                     e.Info.Width/2, e.Info.Height / 2, paint);
-                
             }
-        }
-
-        private void drawCross()
-        {
-            
-
-            
         }
     }
 }
